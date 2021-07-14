@@ -3,7 +3,7 @@ package br.com.igorcoura.employeemanagement.controller;
 
 import br.com.igorcoura.employeemanagement.domain.models.CreateEmployeeModel;
 import br.com.igorcoura.employeemanagement.domain.models.EmployeeModel;
-import br.com.igorcoura.employeemanagement.service.EmployeeService;
+import br.com.igorcoura.employeemanagement.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,7 +1,7 @@
 package br.com.igorcoura.employeemanagement.controller;
 
 import br.com.igorcoura.employeemanagement.domain.entities.Teste;
-import br.com.igorcoura.employeemanagement.service.TesteService;
+import br.com.igorcoura.employeemanagement.services.TesteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

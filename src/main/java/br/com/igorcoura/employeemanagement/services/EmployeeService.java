@@ -1,7 +1,6 @@
-package br.com.igorcoura.employeemanagement.service;
+package br.com.igorcoura.employeemanagement.services;
 
 import br.com.igorcoura.employeemanagement.Mapper.EmployeeMapper;
-import br.com.igorcoura.employeemanagement.domain.entities.Employee;
 import br.com.igorcoura.employeemanagement.domain.models.CreateEmployeeModel;
 import br.com.igorcoura.employeemanagement.domain.models.EmployeeModel;
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeService {

@@ -1,4 +1,4 @@
-package br.com.igorcoura.employeemanagement.service;
+package br.com.igorcoura.employeemanagement.services;
 
 import br.com.igorcoura.employeemanagement.domain.entities.Teste;
 import br.com.igorcoura.employeemanagement.repository.TesteRepository;

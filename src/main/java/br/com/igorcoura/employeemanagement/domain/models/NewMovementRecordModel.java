@@ -2,6 +2,7 @@ package br.com.igorcoura.employeemanagement.domain.models;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -11,5 +12,5 @@ import java.util.Date;
 @Builder
 public class NewMovementRecordModel {
     private long idEmployee;
-    private Date date;
+    private LocalDateTime date;
 }
