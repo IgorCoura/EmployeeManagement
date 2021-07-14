@@ -3,6 +3,7 @@ package br.com.igorcoura.employeemanagement.domain.models;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 
 
@@ -16,8 +17,8 @@ public class EmployeeModel {
     private String name;
     private String cpf;
     private String empresa;
-    private LocalDateTime startWork;
-    private LocalDateTime endWork;
+    private LocalTime startWork;
+    private LocalTime endWork;
     private double lunchTime;
 
     @Override

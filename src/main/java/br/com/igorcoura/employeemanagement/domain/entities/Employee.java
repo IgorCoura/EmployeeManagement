@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 
 @Entity
@@ -22,8 +23,8 @@ public class Employee {
     private String name;
     private String cpf;
     private String empresa;
-    private LocalDateTime startWork;
-    private LocalDateTime endWork;
+    private LocalTime startWork;
+    private LocalTime endWork;
     private double lunchTime;
 
     @Override

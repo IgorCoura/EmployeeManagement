@@ -51,13 +51,20 @@ public class MovementRecordService {
                 continue;
             }
 
+            if(movement.getEndTimeWork() != null){
+                movement.setOpen(false);
+                movementRecordRepository.save(movement);
+                continue;
+            }
+
             //Calculate date limit
             var dateLimit = movement.getStartTimeWork().plusDays(1);
-            var dateTimeLimit = LocalDateTime.of(dateLimit.getYear(), dateLimit.getMonth(), dateLimit.getDayOfMonth(), movement.getEmployee().getStartWork().getHour(), movement.getEmployee().getStartWork().getMinute());
+            var startWork = movement.getEmployee().getStartWork().plusHours(-1);
+            var dateTimeLimit = LocalDateTime.of(dateLimit.getYear(), dateLimit.getMonth(), dateLimit.getDayOfMonth(), startWork.getHour(), startWork.getMinute());
 
             //Check if the new movement is on the date limit
             //if it is not within the date limit, close the current movement.
-            if(dateTimeLimit.isBefore(newMovementRecordModel.getDate())){
+            if(dateTimeLimit.isBefore(newMovementRecordModel.getDate()) || movement.getStartTimeWork().isAfter(newMovementRecordModel.getDate())){
                 if(movement.getEndTimeWork() == null){
                     if(movement.getEndLunchTime() != null){
                         movement.setEndLunchTime(movement.getEndLunchTime());
@@ -74,25 +81,34 @@ public class MovementRecordService {
         }
 
         MovementRecord validMovement = null;
-        int countfilledField = -1;
-
+        boolean option1 = false, option2= false, option3= false;
         //if there is more than one valid case, this will choose the one with the most data filling in and close the rest.
         for(MovementRecord movement: listValidMovement){
-            int count = 0;
-            if(movement.getStartTimeWork() != null){
-                count++;
+            if(movement.getStartLunchTime() != null && !option1){
+                if(movement.getEndLunchTime() != null){
+                    option1 = true;
+                }
+                if(validMovement != null){
+                    validMovement.setOpen(false);
+                    movementRecordRepository.save(validMovement);
+                }
+                option2 = true;
+                validMovement = movement;
             }
-            if(movement.getStartLunchTime() != null){
-                count++;
+
+            if(movement.getEndLunchTime() != null && !option1 && !option2){
+                if(validMovement != null){
+                    validMovement.setOpen(false);
+                    movementRecordRepository.save(validMovement);
+                }
+                option3 = true;
+                validMovement = movement;
             }
-            if(movement.getEndLunchTime() != null){
-                count++;
-            }
-            if(movement.getEndTimeWork() != null){
-                count++;
-            }
-            if(count > countfilledField){
-                countfilledField = count;
+            if(!option1 && !option2 && !option3){
+                if(validMovement != null){
+                    validMovement.setOpen(false);
+                    movementRecordRepository.save(validMovement);
+                }
                 validMovement = movement;
             }
         }
@@ -100,7 +116,7 @@ public class MovementRecordService {
     }
 
     private MovementRecord addMovementExistingRecord(MovementRecord movementRecord, NewMovementRecordModel newMovementRecordModel){
-        if(movementRecord.getStartLunchTime() == null){
+        if(movementRecord.getEndLunchTime() != null && movementRecord.getStartLunchTime() == null){
             movementRecord.setStartLunchTime(newMovementRecordModel.getDate());
             return movementRecord;
         }

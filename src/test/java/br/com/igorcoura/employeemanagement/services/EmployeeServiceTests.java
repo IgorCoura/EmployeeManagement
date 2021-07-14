@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.mockito.Mockito.when;
 
@@ -29,8 +30,9 @@ public class EmployeeServiceTests {
     @Test
     void givenValidCreateEmployeeModelThenReturnEmployeeModel() {
 
-        var model = new CreateEmployeeModel("Jose", "123456789", "JoseLTDa", LocalDateTime.MIN, LocalDateTime.MAX, 1);
-        var entity = new Employee(1, "Jose", "123456789", "JoseLTDa", LocalDateTime.MIN, LocalDateTime.MAX, 1);
+        var model = new CreateEmployeeModel("Jose", "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX, 1);
+        var entity = new Employee(1, "Jose", "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX, 1);
+
         var expectedSavedEmployee = EmployeeMapper.toModel(entity);
 
         when(employeeRepository.save(any(Employee.class))).thenReturn(entity);
