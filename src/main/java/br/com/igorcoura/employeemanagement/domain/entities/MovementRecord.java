@@ -17,7 +17,7 @@ public class MovementRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Employee employee;
     private LocalDateTime startTimeWork = null;
     private LocalDateTime startLunchTime = null;

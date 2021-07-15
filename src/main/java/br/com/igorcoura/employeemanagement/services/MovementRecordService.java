@@ -22,14 +22,14 @@ public class MovementRecordService {
     EmployeeRepository employeeemployeeRepository;
 
     public MovementRecord insert(NewMovementRecordModel newMovementRecordModel){
-        var openList = movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).build()));
+        var employee = employeeemployeeRepository.getById(newMovementRecordModel.getIdEmployee());
+        var openList = movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).employee(employee).build()));
         MovementRecord movement = null;
         if(openList.stream().count() > 0){
             movement = checkMovementValidity(openList, newMovementRecordModel);
             movement = addMovementExistingRecord(movement, newMovementRecordModel);
         }
         if(movement == null){
-            var employee = employeeemployeeRepository.getById(newMovementRecordModel.getIdEmployee());
             movement = MovementRecord.builder()
                     .employee(employee)
                     .startTimeWork(newMovementRecordModel.getDate())

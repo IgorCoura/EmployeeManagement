@@ -44,7 +44,7 @@ public class MovementRecordServiceTests {
                 .startTimeWork(newMovementRecord.getDate())
                 .isOpen(true).build();
 
-        when(movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).build()))).thenReturn(new ArrayList<MovementRecord>());
+        when(movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).employee(employee).build()))).thenReturn(new ArrayList<MovementRecord>());
         when(employeeRepository.getById(any(long.class))).thenReturn(employee);
         when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(movementRecord);
 
@@ -68,7 +68,8 @@ public class MovementRecordServiceTests {
                 .isOpen(true)
                 .build();
 
-        when(movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).build()))).thenReturn(listMovementRecord);
+        when(movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).employee(employee).build()))).thenReturn(listMovementRecord);
+        when(employeeRepository.getById(any(long.class))).thenReturn(employee);
         when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(expectedResponse);
 
         var response = movementRecordService.insert(newMovementRecord);

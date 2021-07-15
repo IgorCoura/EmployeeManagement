@@ -25,7 +25,7 @@ public class MovementRecordUtils {
     @Getter
     private static NewMovementRecordModel newMovementRecordInvalidTime = new NewMovementRecordModel(51, LocalDateTime.of(2021,7,15,15,10));
     @Getter
-    private static Employee employee = new Employee(1, "Jose", "123456789", "JoseLTDa", LocalTime.of(7,0), LocalTime.of(17,0), 1);
+    private static Employee employee = EmployeeUtils.getEmployeeValid();
     @Getter
     private static MovementRecord movementRecordTrueWithoutEmployee = MovementRecord.builder()
             .id(1)
@@ -127,10 +127,11 @@ public class MovementRecordUtils {
 
     public static List<MovementRecord> createListMovementRecord(){
         List<MovementRecord> list = new ArrayList<MovementRecord>();
+        list.add(movementRecordTrueWithoutEmployee);
+        list.add(movementRecordRecordTrueOnlyEndLunchTime); // it will be closed
         list.add(movementRecordTrueWithoutTime); // it will be closed
         list.add(movementRecordRecordTrueOnlyStartTimeWork ); // it will be closed
         list.add(movementRecordRecordTrueOnlyStartLunchTime); // it will be closed
-        list.add(movementRecordRecordTrueOnlyEndLunchTime); // it will be closed
         list.add(movementRecordRecordTrueOnlyEndTimeWork); // it will be closed
         list.add(movementRecordRecordTrueWithStartTimeWorkAndStartLunchTime); // it will be used
         list.add(movementRecordRecordTrueWithStartTimeWorkAndEndLunchTime); // it will be closed

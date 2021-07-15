@@ -30,8 +30,8 @@ public class EmployeeServiceTests {
     @Test
     void givenValidCreateEmployeeModelThenReturnEmployeeModel() {
 
-        var model = new CreateEmployeeModel("Jose", "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX, 1);
-        var entity = new Employee(1, "Jose", "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX, 1);
+        var model = new CreateEmployeeModel("Jose", "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX);
+        var entity = new Employee(1, "Jose", "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX);
 
         var expectedSavedEmployee = EmployeeMapper.toModel(entity);
 
@@ -40,6 +40,22 @@ public class EmployeeServiceTests {
         var response = employeeService.insert(model);
 
         Assertions.assertTrue(response.equals(expectedSavedEmployee));
-
     }
+
+    @Test
+    void givenInvalidCreateEmployeeModelThenReturnEmployeeModel() {
+
+        var model = new CreateEmployeeModel(null, "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX);
+        var entity = new Employee(1, "Jose", "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX);
+
+        var expectedSavedEmployee = EmployeeMapper.toModel(entity);
+
+        when(employeeRepository.save(any(Employee.class))).thenReturn(entity);
+
+        var response = employeeService.insert(model);
+
+        Assertions.assertTrue(response.equals(expectedSavedEmployee));
+    }
+
+
 }

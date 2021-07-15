@@ -1,13 +1,18 @@
 package br.com.igorcoura.employeemanagement.services;
 
 import br.com.igorcoura.employeemanagement.Mapper.EmployeeMapper;
+import br.com.igorcoura.employeemanagement.domain.entities.Employee;
 import br.com.igorcoura.employeemanagement.domain.models.CreateEmployeeModel;
 import br.com.igorcoura.employeemanagement.domain.models.EmployeeModel;
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Entity;
+import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -35,8 +40,8 @@ public class EmployeeService {
         return EmployeeMapper.toModel(entity);
     }
 
-    public EmployeeModel recover(long id){
-        var entity = employeeRepository.findById(id).orElseThrow();
+    public EmployeeModel recover(long id) {
+        var entity = employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Employee with "+ id +" not found"));
         return EmployeeMapper.toModel(entity);
     }
 
