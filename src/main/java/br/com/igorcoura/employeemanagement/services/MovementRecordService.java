@@ -37,7 +37,6 @@ public class MovementRecordService {
         }
 
         return movementRecordRepository.save(movement);
-
     }
 
     private MovementRecord checkMovementValidity(List<MovementRecord> listMovementRecord, NewMovementRecordModel newMovementRecordModel){

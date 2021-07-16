@@ -27,4 +27,10 @@ public class EmployeeUtils {
         list.add(EmployeeMapper.toModel(employeeValid));
         return list;
     }
+
+    public static List<Employee> getListEmployeeValid(){
+        List<Employee> list = new ArrayList<>();
+        list.add(employeeValid);
+        return list;
+    }
 }
