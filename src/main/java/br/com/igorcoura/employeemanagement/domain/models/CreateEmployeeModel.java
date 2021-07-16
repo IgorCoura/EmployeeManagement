@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -25,9 +26,9 @@ public class CreateEmployeeModel {
     private String cpf;
     @NotBlank(message = "Empresa cannot be null")
     private String empresa;
-    @NotBlank(message = "Start work cannot be null")
+    @NotNull(message = "Start work cannot be null")
     private LocalTime startWork;
-    @NotBlank(message = "End work cannot be null")
+    @NotNull(message = "End work cannot be null")
     private LocalTime endWork;
 
     @Override

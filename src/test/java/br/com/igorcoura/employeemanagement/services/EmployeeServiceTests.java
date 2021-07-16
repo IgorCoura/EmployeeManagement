@@ -4,6 +4,7 @@ import br.com.igorcoura.employeemanagement.Mapper.EmployeeMapper;
 import br.com.igorcoura.employeemanagement.domain.entities.Employee;
 import br.com.igorcoura.employeemanagement.domain.models.CreateEmployeeModel;
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
+import br.com.igorcoura.employeemanagement.utils.EmployeeUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,25 +29,10 @@ public class EmployeeServiceTests {
     private EmployeeService employeeService;
 
     @Test
-    void givenValidCreateEmployeeModelThenReturnEmployeeModel() {
+    void insertValidCreateEmployeeModel() {
 
-        var model = new CreateEmployeeModel("Jose", "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX);
-        var entity = new Employee(1, "Jose", "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX);
-
-        var expectedSavedEmployee = EmployeeMapper.toModel(entity);
-
-        when(employeeRepository.save(any(Employee.class))).thenReturn(entity);
-
-        var response = employeeService.insert(model);
-
-        Assertions.assertTrue(response.equals(expectedSavedEmployee));
-    }
-
-    @Test
-    void givenInvalidCreateEmployeeModelThenReturnEmployeeModel() {
-
-        var model = new CreateEmployeeModel(null, "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX);
-        var entity = new Employee(1, "Jose", "123456789", "JoseLTDa", LocalTime.MAX, LocalTime.MAX);
+        var model = EmployeeUtils.getEmployeeValidCreateModel();
+        var entity = EmployeeUtils.getEmployeeValid();
 
         var expectedSavedEmployee = EmployeeMapper.toModel(entity);
 
@@ -57,5 +43,8 @@ public class EmployeeServiceTests {
         Assertions.assertTrue(response.equals(expectedSavedEmployee));
     }
 
+
+
+    
 
 }

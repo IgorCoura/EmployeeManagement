@@ -40,9 +40,9 @@ public class EmployeeService {
         return EmployeeMapper.toModel(entity);
     }
 
-    public EmployeeModel recover(long id) {
-        var entity = employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Employee with "+ id +" not found"));
-        return EmployeeMapper.toModel(entity);
+    public EmployeeModel recover(long id){
+        var employee = employeeRepository.findById(id).map(e -> EmployeeMapper.toModel(e));
+        return employee.orElseThrow(() -> new EntityNotFoundException("Employee with id = "+id+", Not Found"));
     }
 
     public void delete(long id){

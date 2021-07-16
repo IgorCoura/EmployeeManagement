@@ -3,6 +3,7 @@ package br.com.igorcoura.employeemanagement.domain.models;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -15,7 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 public class EmployeeModel {
-    @NotBlank(message = "ID cannot be null")
+    @NotNull(message = "ID cannot be null")
     private long id;
     @NotBlank(message = "Name cannot be null")
     private String name;
@@ -24,9 +25,9 @@ public class EmployeeModel {
     private String cpf;
     @NotBlank(message = "Empresa cannot be null")
     private String empresa;
-    @NotBlank(message = "Start work cannot be null")
+    @NotNull(message = "Start work cannot be null")
     private LocalTime startWork;
-    @NotBlank(message = "End work cannot be null")
+    @NotNull(message = "End work cannot be null")
     private LocalTime endWork;
 
     @Override
