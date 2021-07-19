@@ -2,11 +2,12 @@ package br.com.igorcoura.employeemanagement.utils;
 
 import br.com.igorcoura.employeemanagement.domain.entities.Employee;
 import br.com.igorcoura.employeemanagement.domain.entities.MovementRecord;
-import br.com.igorcoura.employeemanagement.domain.models.NewMovementRecordModel;
+import br.com.igorcoura.employeemanagement.domain.models.movementRecord.CreateMovementRecordModel;
+import br.com.igorcoura.employeemanagement.domain.models.movementRecord.MovementRecordModel;
+import br.com.igorcoura.employeemanagement.domain.models.movementRecord.NewUniqueMovementRecordModel;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,132 +15,160 @@ import java.util.List;
 
 public class MovementRecordUtils {
 
-    @Getter
-    private static NewMovementRecordModel newMovementRecordValidTimeToStartWork = new NewMovementRecordModel(51, LocalDateTime.of(2021,7,14,7,10));
-    @Getter
-    private static NewMovementRecordModel newMovementRecordValidTimeToStartLunch = new NewMovementRecordModel(51, LocalDateTime.of(2021,7,14,12,10));
-    @Getter
-    private static NewMovementRecordModel newMovementRecordValidTimeToEndLunch = new NewMovementRecordModel(51, LocalDateTime.of(2021,7,14,13,10));
-    @Getter
-    private static NewMovementRecordModel newMovementRecordValidTimeToEndWork = new NewMovementRecordModel(51, LocalDateTime.of(2021,7,14,15,10));
-    @Getter
-    private static NewMovementRecordModel newMovementRecordInvalidTime = new NewMovementRecordModel(51, LocalDateTime.of(2021,7,15,15,10));
+    private static LocalDateTime startTimeWork = LocalDateTime.of(2021,7,14,7,10);
+    private static LocalDateTime startLunchTime = LocalDateTime.of(2021,7,14,12,10);
+    private static LocalDateTime endLunchTime = LocalDateTime.of(2021,7,14,13,10);
+    private static LocalDateTime endTimeWork = LocalDateTime.of(2021,7,14,15,10);
+
     @Getter
     private static Employee employee = EmployeeUtils.getEmployeeValid();
     @Getter
-    private static MovementRecord movementRecordTrueWithoutEmployee = MovementRecord.builder()
+    private static NewUniqueMovementRecordModel newMovementRecordValidTimeToStartWork = new NewUniqueMovementRecordModel(employee.getId(), startTimeWork);
+    @Getter
+    private static NewUniqueMovementRecordModel newMovementRecordValidTimeToStartLunch = new NewUniqueMovementRecordModel(employee.getId(), startLunchTime);
+    @Getter
+    private static NewUniqueMovementRecordModel newMovementRecordValidTimeToEndLunch = new NewUniqueMovementRecordModel(employee.getId(), endLunchTime);
+    @Getter
+    private static NewUniqueMovementRecordModel newMovementRecordValidTimeToEndWork = new NewUniqueMovementRecordModel(employee.getId(), endTimeWork);
+    @Getter
+    private static NewUniqueMovementRecordModel newMovementRecordInvalidTime = new NewUniqueMovementRecordModel(employee.getId(), startLunchTime.plusDays(1));
+    @Getter
+    private static MovementRecord movementRecordCloseValidAllParameters = new MovementRecord(1, employee, startTimeWork, startLunchTime, endLunchTime, endTimeWork, false);
+    @Getter
+    private static CreateMovementRecordModel createMovementRecordModelValidAllParameters = new CreateMovementRecordModel(employee.getId(), startTimeWork, startLunchTime, endLunchTime, endTimeWork);
+
+    @Getter
+    private static MovementRecord movementRecordOpenWithoutEmployee = MovementRecord.builder()
             .id(1)
             .isOpen(true)
             .build();
     @Getter
-    private static MovementRecord movementRecordTrueWithoutTime = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenWithoutTime = MovementRecord.builder()
             .id(2)
             .employee(employee)
             .isOpen(true)
             .build();
     @Getter
-    private static MovementRecord movementRecordRecordTrueOnlyStartTimeWork = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenOnlyStartTimeWork = MovementRecord.builder()
             .id(3)
             .employee(employee)
             .isOpen(true)
-            .startTimeWork(LocalDateTime.of(2021,7,14,7,10))
+            .startTimeWork(startTimeWork)
             .build();
     @Getter
-    private static MovementRecord movementRecordRecordTrueOnlyStartLunchTime = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenOnlyStartLunchTime = MovementRecord.builder()
             .id(4)
             .employee(employee)
             .isOpen(true)
-            .startLunchTime(LocalDateTime.of(2021,7,14,12,5))
+            .startLunchTime(startLunchTime)
             .build();
     @Getter
-    private static MovementRecord movementRecordRecordTrueOnlyEndLunchTime = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenOnlyEndLunchTime = MovementRecord.builder()
             .id(5)
             .employee(employee)
             .isOpen(true)
-            .endLunchTime(LocalDateTime.of(2021,7,14,13,5))
+            .endLunchTime(endLunchTime)
             .build();
     @Getter
-    private static MovementRecord movementRecordRecordTrueOnlyEndTimeWork = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenOnlyEndTimeWork = MovementRecord.builder()
             .id(6)
             .employee(employee)
             .isOpen(true)
-            .endTimeWork(LocalDateTime.of(2021,7,14,15,15))
+            .endTimeWork(endTimeWork)
             .build();
     @Getter
-    private static MovementRecord movementRecordRecordTrueWithStartTimeWorkAndStartLunchTime = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenWithStartTimeWorkAndStartLunchTime = MovementRecord.builder()
             .id(7)
             .employee(employee)
             .isOpen(true)
-            .startTimeWork(LocalDateTime.of(2021,7,14,7,15))
-            .startLunchTime(LocalDateTime.of(2021,7,14,12,5))
+            .startTimeWork(startTimeWork)
+            .startLunchTime(startLunchTime)
             .build();
     @Getter
-    private static MovementRecord movementRecordRecordTrueWithStartTimeWorkAndEndLunchTime = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenWithStartTimeWorkAndEndLunchTime = MovementRecord.builder()
             .id(8)
             .employee(employee)
             .isOpen(true)
-            .startTimeWork(LocalDateTime.of(2021,7,14,7,15))
-            .endLunchTime(LocalDateTime.of(2021,7,14,1,5))
+            .startTimeWork(startTimeWork)
+            .endLunchTime(endLunchTime)
             .build();
     @Getter
-    private static MovementRecord movementRecordRecordTrueWithStartTimeWorkAndEndTimeWork = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenWithStartTimeWorkAndEndTimeWork = MovementRecord.builder()
             .id(9)
             .employee(employee)
             .isOpen(true)
-            .startTimeWork(LocalDateTime.of(2021,7,14,7,15))
-            .endTimeWork(LocalDateTime.of(2021,7,14,17,5))
+            .startTimeWork(startTimeWork)
+            .endTimeWork(endTimeWork)
             .build();
 
     @Getter
-    private static MovementRecord movementRecordRecordTrueOnlyInvalidStartTimeWorkBeforeWithOnlyStartLunchTime = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenBeforeTimeInvalidWithStartTimeWorkAndStartLunchTime = MovementRecord.builder()
             .id(10)
             .employee(employee)
             .isOpen(true)
-            .startTimeWork(LocalDateTime.of(2021,7,13,7,10))
-            .startLunchTime(LocalDateTime.of(2021,7,13,12,10))
+            .startTimeWork(startTimeWork.plusDays(-1))
+            .startLunchTime(startLunchTime.plusDays(-1))
             .build();
 
     @Getter
-    private static MovementRecord movementRecordRecordTrueOnlyInvalidStartTimeWorkBeforeWithOnlyEndLunchTime = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenBeforeTimeInvalidWithStartTimeWorkAndEndLunchTime = MovementRecord.builder()
             .id(11)
             .employee(employee)
             .isOpen(true)
-            .startTimeWork(LocalDateTime.of(2021,7,13,7,10))
-            .endLunchTime(LocalDateTime.of(2021,7,13,12,10))
+            .startTimeWork(startTimeWork.plusDays(-1))
+            .endLunchTime(endLunchTime.plusDays(-1))
             .build();
     @Getter
-    private static MovementRecord movementRecordRecordTrueOnlyInvalidStartTimeWorkBeforeWithStartEndEndLunchTime = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenBeforeTimeInvalidWithStartTimeWorkAndStartAndEndLunchTime = MovementRecord.builder()
             .id(12)
             .employee(employee)
             .isOpen(true)
-            .startTimeWork(LocalDateTime.of(2021,7,13,7,10))
-            .startLunchTime(LocalDateTime.of(2021,7,13,12,10))
-            .endLunchTime(LocalDateTime.of(2021,7,13,13,10))
+            .startTimeWork(startTimeWork.plusDays(-1))
+            .startLunchTime(startLunchTime.plusDays(-1))
+            .endLunchTime(endLunchTime.plusDays(-1))
             .build();
 
     @Getter
-    private static MovementRecord movementRecordRecordTrueOnlyInvalidStartTimeWorkAfter = MovementRecord.builder()
+    private static MovementRecord movementRecordOpenAfterTimeInvalidOnlyStartTimeWork = MovementRecord.builder()
             .id(13)
             .employee(employee)
             .isOpen(true)
-            .startTimeWork(LocalDateTime.of(2021,7,15,7,10))
+            .startTimeWork(startTimeWork.plusDays(1))
+            .build();
+
+
+    @Getter
+    private static MovementRecordModel movementRecordModelValidAllParameters = MovementRecordModel.builder()
+            .id(14)
+            .employee(employee)
+            .startTimeWork(startTimeWork)
+            .startLunchTime(startLunchTime)
+            .endLunchTime(endLunchTime)
+            .endTimeWork(endTimeWork)
+            .build();
+
+    @Getter
+    private static MovementRecord movementRecordOnlyEmployee = MovementRecord.builder()
+            .id(15)
+            .employee(employee)
+            .isOpen(false)
             .build();
 
     public static List<MovementRecord> createListMovementRecord(){
         List<MovementRecord> list = new ArrayList<MovementRecord>();
-        list.add(movementRecordTrueWithoutEmployee);
-        list.add(movementRecordRecordTrueOnlyEndLunchTime); // it will be closed
-        list.add(movementRecordTrueWithoutTime); // it will be closed
-        list.add(movementRecordRecordTrueOnlyStartTimeWork ); // it will be closed
-        list.add(movementRecordRecordTrueOnlyStartLunchTime); // it will be closed
-        list.add(movementRecordRecordTrueOnlyEndTimeWork); // it will be closed
-        list.add(movementRecordRecordTrueWithStartTimeWorkAndStartLunchTime); // it will be used
-        list.add(movementRecordRecordTrueWithStartTimeWorkAndEndLunchTime); // it will be closed
-        list.add(movementRecordRecordTrueWithStartTimeWorkAndEndTimeWork); // it will be closed
-        list.add(movementRecordRecordTrueOnlyInvalidStartTimeWorkBeforeWithOnlyStartLunchTime); // it will be closed
-        list.add(movementRecordRecordTrueOnlyInvalidStartTimeWorkAfter); // it will be closed
-        list.add(movementRecordRecordTrueOnlyInvalidStartTimeWorkBeforeWithOnlyEndLunchTime); // it will be closed
-        list.add(movementRecordRecordTrueOnlyInvalidStartTimeWorkBeforeWithStartEndEndLunchTime); // it will be closed
+        list.add(movementRecordOpenWithoutEmployee);
+        list.add(movementRecordOpenOnlyEndLunchTime); // it will be closed
+        list.add(movementRecordOpenWithoutTime); // it will be closed
+        list.add(movementRecordOpenOnlyStartTimeWork); // it will be closed
+        list.add(movementRecordOpenOnlyStartLunchTime); // it will be closed
+        list.add(movementRecordOpenOnlyEndTimeWork); // it will be closed
+        list.add(movementRecordOpenWithStartTimeWorkAndStartLunchTime); // it will be used
+        list.add(movementRecordOpenWithStartTimeWorkAndEndLunchTime); // it will be closed
+        list.add(movementRecordOpenWithStartTimeWorkAndEndTimeWork); // it will be closed
+        list.add(movementRecordOpenBeforeTimeInvalidWithStartTimeWorkAndStartAndEndLunchTime); // it will be closed
+        list.add(movementRecordOpenAfterTimeInvalidOnlyStartTimeWork); // it will be closed
+        list.add(movementRecordOpenBeforeTimeInvalidWithStartTimeWorkAndEndLunchTime); // it will be closed
+        list.add(movementRecordOpenBeforeTimeInvalidWithStartTimeWorkAndStartAndEndLunchTime); // it will be closed
         return list;
     }
 

@@ -4,13 +4,13 @@ import br.com.igorcoura.employeemanagement.Mapper.EmployeeMapper;
 import br.com.igorcoura.employeemanagement.domain.entities.Employee;
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
 import br.com.igorcoura.employeemanagement.utils.EmployeeUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.stream.Collectors;
 import java.util.Optional;
@@ -38,7 +38,7 @@ public class EmployeeServiceTests {
 
         var response = employeeService.insert(model);
 
-        Assertions.assertTrue(response.equals(expectedSavedEmployee));
+       assertEquals(expectedSavedEmployee, response);
     }
 
     @Test
@@ -50,33 +50,35 @@ public class EmployeeServiceTests {
 
         var response = employeeService.update(expectedResponse);
 
-        Assertions.assertTrue(response.equals(expectedResponse));
+        assertEquals(expectedResponse,response);
     }
 
     @Test
     void recoverAllValid() {
         var listEntity = EmployeeUtils.getListEmployeeValid();
-        var expectedResponse = listEntity.stream().map(e -> EmployeeMapper.toModel(e)).collect(Collectors.toList());
+        var expectedResponse = listEntity.stream().map(e -> EmployeeMapper.toReturnModel(e)).collect(Collectors.toList());
 
         when(employeeRepository.findAll()).thenReturn(listEntity);
 
         var response = employeeService.recoverAll();
 
-        Assertions.assertTrue(response.equals(expectedResponse));
+        assertEquals(expectedResponse,response);
     }
 
     @Test
     void recoverByIDValid() {
         var entity = EmployeeUtils.getEmployeeValid();
         Optional<Employee> opt = Optional.of(entity);
-        var expectedResponse = EmployeeMapper.toModel(entity);
+        var expectedResponse = EmployeeMapper.toReturnModel(entity);
 
         when(employeeRepository.findById(any(Long.class))).thenReturn(opt);
 
         var response = employeeService.recover(1);
 
-        Assertions.assertTrue(response.equals(expectedResponse));
+        assertEquals(expectedResponse,response);
     }
+
+
 
 
 }

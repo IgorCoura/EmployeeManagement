@@ -1,25 +1,24 @@
 package br.com.igorcoura.employeemanagement.services;
 
+import br.com.igorcoura.employeemanagement.Mapper.MovementRecordMapper;
 import br.com.igorcoura.employeemanagement.domain.entities.Employee;
 import br.com.igorcoura.employeemanagement.domain.entities.MovementRecord;
-import br.com.igorcoura.employeemanagement.domain.models.NewMovementRecordModel;
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
 import br.com.igorcoura.employeemanagement.repository.MovementRecordRepository;
+import br.com.igorcoura.employeemanagement.services.exception.UpdateMovementRecordException;
 import br.com.igorcoura.employeemanagement.utils.MovementRecordUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Example;
+
+import javax.persistence.EntityNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 
@@ -30,53 +29,95 @@ public class MovementRecordServiceTests {
     private MovementRecordRepository movementRecordRepository;
 
     @Mock
-    private EmployeeRepository employeeRepository;
+    private  EmployeeRepository employeeRepository;
 
     @InjectMocks
     private MovementRecordService movementRecordService;
 
+
     @Test
-    void givenValidNewMovementRecordThenReturnMovementRecordWhenNotHaveAnythingInMovementRecordRepository() {
-        var newMovementRecord = MovementRecordUtils.getNewMovementRecordValidTimeToStartWork();
-        var employee = MovementRecordUtils.getEmployee();
-        var movementRecord = MovementRecord.builder()
-                .employee(employee)
-                .startTimeWork(newMovementRecord.getDate())
-                .isOpen(true).build();
+    void insertValid() {
+        var createModel = MovementRecordUtils.getCreateMovementRecordModelValidAllParameters();
+        var entity = MovementRecordUtils.getMovementRecordCloseValidAllParameters();
+        var expectedResponse = MovementRecordMapper.toModel(entity);
+        Optional<Employee> employee = Optional.of(entity.getEmployee());
 
-        when(movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).employee(employee).build()))).thenReturn(new ArrayList<MovementRecord>());
-        when(employeeRepository.getById(any(long.class))).thenReturn(employee);
-        when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(movementRecord);
-
-        var response = movementRecordService.insert(newMovementRecord);
-
-        assertTrue(response.equals(movementRecord));
+        when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(entity);
+        when(employeeRepository.findById(any(Long.class))).thenReturn(employee);
+        var response =  movementRecordService.insert(createModel);
+        assertEquals(expectedResponse, response);
     }
 
     @Test
-    void givenValidNewMovementRecordThenReturnMovementRecordWhenHaveDataInMovementRecordRepository(){
-        var newMovementRecord = MovementRecordUtils.getNewMovementRecordValidTimeToEndLunch();
-        var employee = MovementRecordUtils.getEmployee();
-        var listMovementRecord = MovementRecordUtils.createListMovementRecord();
+    void updateValidCloseMovementRecord() {
+        var expectedResponse = MovementRecordUtils.getMovementRecordModelValidAllParameters();
+        Optional<MovementRecord> findReturn = Optional.of(MovementRecordUtils.getMovementRecordOnlyEmployee());
+        var returnSave = MovementRecordMapper.toEntity(expectedResponse);
 
-        MovementRecord expectedResponse = new MovementRecord().builder()
-                .id(listMovementRecord.get(5).getId())
-                .employee(listMovementRecord.get(5).getEmployee())
-                .startTimeWork(listMovementRecord.get(5).getStartTimeWork())
-                .startLunchTime(listMovementRecord.get(5).getStartLunchTime())
-                .endLunchTime(newMovementRecord.getDate())
-                .isOpen(true)
-                .build();
+        when(movementRecordRepository.findById(any(Long.class))).thenReturn(findReturn);
+        when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(returnSave);
 
-        when(movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).employee(employee).build()))).thenReturn(listMovementRecord);
-        when(employeeRepository.getById(any(long.class))).thenReturn(employee);
-        when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(expectedResponse);
+        var response = movementRecordService.update(expectedResponse, false);
 
-        var response = movementRecordService.insert(newMovementRecord);
-
-        assertTrue(response.equals(expectedResponse));
+        assertEquals(expectedResponse, response);
     }
 
+    @Test
+    void updateValidForceOpenMovementRecord() {
+        var expectedResponse = MovementRecordUtils.getMovementRecordModelValidAllParameters();
+        var returnSave = MovementRecordMapper.toEntity(expectedResponse);
 
+        when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(returnSave);
 
+        var response = movementRecordService.update(expectedResponse, true);
+
+        assertEquals(expectedResponse, response);
+    }
+
+    @Test
+    void updateNotFound() {
+        var request = MovementRecordUtils.getMovementRecordModelValidAllParameters();
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            movementRecordService.update(request, false);
+        });
+
+    }
+
+    @Test
+    void updateOpenException() {
+        var request = MovementRecordUtils.getMovementRecordModelValidAllParameters();
+        Optional<MovementRecord> findReturn = Optional.of(MovementRecordUtils.getMovementRecordOnlyEmployee().builder().isOpen(true).build());
+
+        when(movementRecordRepository.findById(any(Long.class))).thenReturn(findReturn);
+
+        assertThrows(UpdateMovementRecordException.class, () -> {
+            movementRecordService.update(request, false);
+        });
+    }
+
+    @Test
+    void recoverAllValid() {
+        var listReturn = MovementRecordUtils.createListMovementRecord();
+        var expectedResponse = MovementRecordMapper.toListModel(listReturn);
+
+        when(movementRecordRepository.findAll()).thenReturn(listReturn);
+
+        var response = movementRecordService.recoverAll();
+
+        assertEquals(expectedResponse, response);
+    }
+
+    @Test
+    void recoverByIdValid() {
+        Optional<MovementRecord> entity = Optional.of(MovementRecordUtils.getMovementRecordCloseValidAllParameters());
+        var expectedResponse = MovementRecordMapper.toModel(entity.get());
+
+        when(movementRecordRepository.findById(any(long.class))).thenReturn(entity);
+
+        var response = movementRecordService.recover(1);
+
+        assertEquals(expectedResponse, response);
+
+    }
 }

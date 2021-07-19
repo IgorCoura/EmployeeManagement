@@ -1,38 +1,25 @@
 package br.com.igorcoura.employeemanagement.controller;
 
-import br.com.igorcoura.employeemanagement.domain.entities.Employee;
-import br.com.igorcoura.employeemanagement.domain.models.CreateEmployeeModel;
-import br.com.igorcoura.employeemanagement.domain.models.EmployeeModel;
-import br.com.igorcoura.employeemanagement.domain.responseException.ValidationError;
+import br.com.igorcoura.employeemanagement.domain.models.employee.CreateEmployeeModel;
+import br.com.igorcoura.employeemanagement.domain.models.employee.EmployeeModel;
 import br.com.igorcoura.employeemanagement.services.EmployeeService;
 import br.com.igorcoura.employeemanagement.utils.EmployeeUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.neo4j.AutoConfigureDataNeo4j;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 import javax.persistence.EntityNotFoundException;
-import javax.swing.text.html.Option;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -50,7 +37,7 @@ public class EmployeeControllerTests {
 
     @Test
     void employeeGetAllValid() throws Exception {
-        var listEmployee = EmployeeUtils.getListEmployeeModelValid();
+        var listEmployee = EmployeeUtils.getListEmployeeReturnModelValid();
         when(employeeService.recoverAll()).thenReturn(listEmployee);
         var response = mockMvc.perform(MockMvcRequestBuilders.get("/api/employee")).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         assertEquals(objectMapper.writeValueAsString(listEmployee), response.getResponse().getContentAsString());
@@ -58,7 +45,7 @@ public class EmployeeControllerTests {
 
     @Test
     void employeeGetByIDValid() throws Exception {
-        var employee = EmployeeUtils.getEmployeeValidModel();
+        var employee = EmployeeUtils.getEmployeeValidReturnModel();
         when(employeeService.recover(any(Long.class))).thenReturn(employee);
         var response = mockMvc.perform(MockMvcRequestBuilders.get("/api/employee/{id}", "/1")).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         assertEquals(objectMapper.writeValueAsString(employee), response.getResponse().getContentAsString());
@@ -72,7 +59,7 @@ public class EmployeeControllerTests {
 
     @Test
     void employeeGetByIDBadRequest() throws Exception {
-        var employee = EmployeeUtils.getEmployeeValidModel();
+        var employee = EmployeeUtils.getEmployeeValidReturnModel();
         when(employeeService.recover(any(Long.class))).thenReturn(employee);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/employee/{id}", "/d")).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }

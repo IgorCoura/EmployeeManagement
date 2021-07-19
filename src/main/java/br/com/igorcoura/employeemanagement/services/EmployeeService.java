@@ -1,16 +1,14 @@
 package br.com.igorcoura.employeemanagement.services;
 
 import br.com.igorcoura.employeemanagement.Mapper.EmployeeMapper;
-import br.com.igorcoura.employeemanagement.domain.entities.Employee;
-import br.com.igorcoura.employeemanagement.domain.models.CreateEmployeeModel;
-import br.com.igorcoura.employeemanagement.domain.models.EmployeeModel;
+import br.com.igorcoura.employeemanagement.domain.models.employee.CreateEmployeeModel;
+import br.com.igorcoura.employeemanagement.domain.models.employee.EmployeeModel;
+import br.com.igorcoura.employeemanagement.domain.models.employee.ReturnEmployeeModel;
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
 import java.util.List;
 
 
@@ -35,13 +33,13 @@ public class EmployeeService {
         return EmployeeMapper.toModel(entity);
     }
 
-    public List<EmployeeModel> recoverAll(){
+    public List<ReturnEmployeeModel> recoverAll(){
         var entity = employeeRepository.findAll();
-        return EmployeeMapper.toModel(entity);
+        return EmployeeMapper.toReturnModel(entity);
     }
 
-    public EmployeeModel recover(long id){
-        var employee = employeeRepository.findById(id).map(e -> EmployeeMapper.toModel(e));
+    public ReturnEmployeeModel recover(long id){
+        var employee = employeeRepository.findById(id).map(e -> EmployeeMapper.toReturnModel(e));
         return employee.orElseThrow(() -> new EntityNotFoundException("Employee with id = "+id+", Not Found"));
     }
 
