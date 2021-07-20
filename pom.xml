@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.igorcoura</groupId>
-	<artifactId>employee-management</artifactId>
+	<artifactId>employee-movement-record-manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>employee-management</name>
 	<description>Demo project for Spring Boot</description>
