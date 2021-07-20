@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NewUniqueMovementRecordModel {
+public class CreateUniqueMovementRecordModel {
     @NotNull(message = "Id emplyee cannot be null")
     private long idEmployee;
     @NotNull(message = "Date cannot be null")

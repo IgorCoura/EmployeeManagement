@@ -4,7 +4,7 @@ import br.com.igorcoura.employeemanagement.domain.entities.Employee;
 import br.com.igorcoura.employeemanagement.domain.entities.MovementRecord;
 import br.com.igorcoura.employeemanagement.domain.models.movementRecord.CreateMovementRecordModel;
 import br.com.igorcoura.employeemanagement.domain.models.movementRecord.MovementRecordModel;
-import br.com.igorcoura.employeemanagement.domain.models.movementRecord.NewUniqueMovementRecordModel;
+import br.com.igorcoura.employeemanagement.domain.models.movementRecord.CreateUniqueMovementRecordModel;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -23,15 +23,15 @@ public class MovementRecordUtils {
     @Getter
     private static Employee employee = EmployeeUtils.getEmployeeValid();
     @Getter
-    private static NewUniqueMovementRecordModel newMovementRecordValidTimeToStartWork = new NewUniqueMovementRecordModel(employee.getId(), startTimeWork);
+    private static CreateUniqueMovementRecordModel newMovementRecordValidTimeToStartWork = new CreateUniqueMovementRecordModel(employee.getId(), startTimeWork);
     @Getter
-    private static NewUniqueMovementRecordModel newMovementRecordValidTimeToStartLunch = new NewUniqueMovementRecordModel(employee.getId(), startLunchTime);
+    private static CreateUniqueMovementRecordModel newMovementRecordValidTimeToStartLunch = new CreateUniqueMovementRecordModel(employee.getId(), startLunchTime);
     @Getter
-    private static NewUniqueMovementRecordModel newMovementRecordValidTimeToEndLunch = new NewUniqueMovementRecordModel(employee.getId(), endLunchTime);
+    private static CreateUniqueMovementRecordModel newMovementRecordValidTimeToEndLunch = new CreateUniqueMovementRecordModel(employee.getId(), endLunchTime);
     @Getter
-    private static NewUniqueMovementRecordModel newMovementRecordValidTimeToEndWork = new NewUniqueMovementRecordModel(employee.getId(), endTimeWork);
+    private static CreateUniqueMovementRecordModel newMovementRecordValidTimeToEndWork = new CreateUniqueMovementRecordModel(employee.getId(), endTimeWork);
     @Getter
-    private static NewUniqueMovementRecordModel newMovementRecordInvalidTime = new NewUniqueMovementRecordModel(employee.getId(), startLunchTime.plusDays(1));
+    private static CreateUniqueMovementRecordModel newMovementRecordInvalidTime = new CreateUniqueMovementRecordModel(employee.getId(), startLunchTime.plusDays(1));
     @Getter
     private static MovementRecord movementRecordCloseValidAllParameters = new MovementRecord(1, employee, startTimeWork, startLunchTime, endLunchTime, endTimeWork, false);
     @Getter

@@ -3,7 +3,7 @@ package br.com.igorcoura.employeemanagement.services;
 import br.com.igorcoura.employeemanagement.Mapper.MovementRecordMapper;
 import br.com.igorcoura.employeemanagement.domain.entities.MovementRecord;
 import br.com.igorcoura.employeemanagement.domain.models.movementRecord.MovementRecordModel;
-import br.com.igorcoura.employeemanagement.domain.models.movementRecord.NewUniqueMovementRecordModel;
+import br.com.igorcoura.employeemanagement.domain.models.movementRecord.CreateUniqueMovementRecordModel;
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
 import br.com.igorcoura.employeemanagement.repository.MovementRecordRepository;
 import br.com.igorcoura.employeemanagement.services.interfaces.IUniqueMovementRecordService;
@@ -24,24 +24,24 @@ public class UniqueMovementRecordService implements IUniqueMovementRecordService
     private EmployeeRepository employeeRepository;
 
 
-    public MovementRecordModel insert(NewUniqueMovementRecordModel newUniqueMovementRecordModel){
-        var employee = employeeRepository.getById(newUniqueMovementRecordModel.getIdEmployee());
+    public MovementRecordModel insert(CreateUniqueMovementRecordModel createUniqueMovementRecordModel){
+        var employee = employeeRepository.getById(createUniqueMovementRecordModel.getIdEmployee());
         var openList = movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).employee(employee).build()));
         MovementRecord movement = null;
         if(openList.stream().count() > 0){
-            movement = checkMovementValidity(openList, newUniqueMovementRecordModel);
-            movement = addMovementExistingRecord(movement, newUniqueMovementRecordModel);
+            movement = checkMovementValidity(openList, createUniqueMovementRecordModel);
+            movement = addMovementExistingRecord(movement, createUniqueMovementRecordModel);
         }
         if(movement == null){
             movement = MovementRecord.builder()
                     .employee(employee)
-                    .startTimeWork(newUniqueMovementRecordModel.getDate())
+                    .startTimeWork(createUniqueMovementRecordModel.getDate())
                     .isOpen(true).build();
         }
         return MovementRecordMapper.toModel(movementRecordRepository.save(movement));
     }
 
-    private MovementRecord checkMovementValidity(List<MovementRecord> listMovementRecord, NewUniqueMovementRecordModel newUniqueMovementRecordModel){
+    private MovementRecord checkMovementValidity(List<MovementRecord> listMovementRecord, CreateUniqueMovementRecordModel createUniqueMovementRecordModel){
 
         List<MovementRecord> listValidMovement = new ArrayList<MovementRecord>();
 
@@ -65,7 +65,7 @@ public class UniqueMovementRecordService implements IUniqueMovementRecordService
 
             //Check if the new movement is on the date limit
             //if it is not within the date limit, close the current movement.
-            if(dateTimeLimit.isBefore(newUniqueMovementRecordModel.getDate()) || movement.getStartTimeWork().isAfter(newUniqueMovementRecordModel.getDate())){
+            if(dateTimeLimit.isBefore(createUniqueMovementRecordModel.getDate()) || movement.getStartTimeWork().isAfter(createUniqueMovementRecordModel.getDate())){
                 if(movement.getEndTimeWork() == null){
                     if(movement.getEndLunchTime() != null){
                         movement.setEndLunchTime(movement.getEndLunchTime());
@@ -116,17 +116,17 @@ public class UniqueMovementRecordService implements IUniqueMovementRecordService
         return validMovement;
     }
 
-    private MovementRecord addMovementExistingRecord(MovementRecord movementRecord, NewUniqueMovementRecordModel newUniqueMovementRecordModel){
+    private MovementRecord addMovementExistingRecord(MovementRecord movementRecord, CreateUniqueMovementRecordModel createUniqueMovementRecordModel){
         if(movementRecord.getEndLunchTime() != null && movementRecord.getStartLunchTime() == null){
-            movementRecord.setStartLunchTime(newUniqueMovementRecordModel.getDate());
+            movementRecord.setStartLunchTime(createUniqueMovementRecordModel.getDate());
             return movementRecord;
         }
         else if(movementRecord.getEndLunchTime() == null){
-            movementRecord.setEndLunchTime(newUniqueMovementRecordModel.getDate());
+            movementRecord.setEndLunchTime(createUniqueMovementRecordModel.getDate());
             return movementRecord;
         }
         else if(movementRecord.getEndTimeWork() == null){
-            movementRecord.setEndTimeWork(newUniqueMovementRecordModel.getDate());
+            movementRecord.setEndTimeWork(createUniqueMovementRecordModel.getDate());
             movementRecord.setOpen(false);
             return movementRecord;
         }

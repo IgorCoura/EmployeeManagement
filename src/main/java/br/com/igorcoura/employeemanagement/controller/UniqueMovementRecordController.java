@@ -1,8 +1,9 @@
 package br.com.igorcoura.employeemanagement.controller;
 
 import br.com.igorcoura.employeemanagement.domain.models.movementRecord.CreateMovementRecordModel;
+import br.com.igorcoura.employeemanagement.domain.models.movementRecord.CreateUniqueMovementRecordModel;
 import br.com.igorcoura.employeemanagement.domain.models.movementRecord.MovementRecordModel;
-import br.com.igorcoura.employeemanagement.services.interfaces.IMovementRecordService;
+import br.com.igorcoura.employeemanagement.services.interfaces.IUniqueMovementRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,11 @@ import javax.validation.Valid;
 public class UniqueMovementRecordController {
 
     @Autowired
-    private IMovementRecordService movementRecordService;
+    private IUniqueMovementRecordService service;
 
     @PostMapping
-    public ResponseEntity<MovementRecordModel> register(@RequestBody @Valid CreateMovementRecordModel model){
-        return ResponseEntity.status(HttpStatus.CREATED).body(movementRecordService.insert(model));
+    public ResponseEntity<MovementRecordModel> register(@RequestBody @Valid CreateUniqueMovementRecordModel model){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.insert(model));
     }
 
 }

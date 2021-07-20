@@ -40,6 +40,27 @@ public class MovementRecordControllerTests {
     private ObjectMapper objectMapper;
 
     @Test
+    void movementRecordRegisterValid() throws Exception {
+        var create = MovementRecordUtils.getCreateMovementRecordModelValidAllParameters();
+        var model = MovementRecordUtils.getMovementRecordModelValidAllParameters();
+        when(service.insert(any(CreateMovementRecordModel.class))).thenReturn(model);
+        var response = mockMvc.perform(MockMvcRequestBuilders.post("/api/movementrecord")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(create))).andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
+        assertEquals(objectMapper.writeValueAsString(model), response.getResponse().getContentAsString());
+    }
+
+    @Test
+    void movementRecordRegisterInvalid() throws Exception {
+        var create = new CreateMovementRecordModel();
+        var model = new MovementRecordModel();
+        when(service.insert(any(CreateMovementRecordModel.class))).thenReturn(model);
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/movementrecord")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(create))).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
     void movementRecordGetAllValid() throws Exception {
         var list = MovementRecordUtils.getListMovementRecordModel();
         when(service.recoverAll()).thenReturn(list);
@@ -68,26 +89,7 @@ public class MovementRecordControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/movementrecord/{id}", "/d")).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-    @Test
-    void movementRecordRegisterValid() throws Exception {
-        var create = MovementRecordUtils.getCreateMovementRecordModelValidAllParameters();
-        var model = MovementRecordUtils.getMovementRecordModelValidAllParameters();
-        when(service.insert(any(CreateMovementRecordModel.class))).thenReturn(model);
-        var response = mockMvc.perform(MockMvcRequestBuilders.post("/api/movementrecord")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(create))).andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
-        assertEquals(objectMapper.writeValueAsString(model), response.getResponse().getContentAsString());
-    }
 
-    @Test
-    void movementRecordRegisterInvalid() throws Exception {
-        var create = new CreateMovementRecordModel();
-        var model = new MovementRecordModel();
-        when(service.insert(any(CreateMovementRecordModel.class))).thenReturn(model);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/movementrecord")
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(create))).andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
 
     @Test
     void movementRecordUpdateValid() throws Exception {
