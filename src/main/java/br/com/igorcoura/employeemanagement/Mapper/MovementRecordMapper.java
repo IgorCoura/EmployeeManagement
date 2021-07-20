@@ -9,7 +9,14 @@ import java.util.stream.Collectors;
 
 public class MovementRecordMapper {
     public static MovementRecord toEntity(MovementRecordModel model){
-        return new MovementRecord(model.getId(), model.getEmployee(), model.getStartTimeWork(), model.getStartLunchTime(), model.getEndLunchTime(), model.getEndTimeWork(), false);
+        return   MovementRecord.builder()
+                .id(model.getId())
+                .startLunchTime(model.getStartLunchTime())
+                .startTimeWork(model.getStartTimeWork())
+                .endLunchTime(model.getEndLunchTime())
+                .endTimeWork(model.getEndTimeWork())
+                .isOpen(false)
+                .build();
     }
 
     public static MovementRecord toEntity(CreateMovementRecordModel model){
@@ -23,8 +30,14 @@ public class MovementRecordMapper {
     }
 
     public static MovementRecordModel toModel(MovementRecord entity){
-        return new MovementRecordModel(entity.getId(), entity.getEmployee(), entity.getStartTimeWork(), entity.getStartLunchTime(), entity.getEndLunchTime(), entity.getEndTimeWork());
-    }
+        return  MovementRecordModel.builder()
+                .id(entity.getId())
+                .idEmployee(entity.getEmployee().getId())
+                .startLunchTime(entity.getStartLunchTime())
+                .startTimeWork(entity.getStartTimeWork())
+                .endLunchTime(entity.getEndLunchTime())
+                .endTimeWork(entity.getEndTimeWork())
+                .build();}
 
     public static List<MovementRecordModel> toListModel(List<MovementRecord> entity){
         return entity.stream().map(e -> toModel(e)).collect(Collectors.toList());

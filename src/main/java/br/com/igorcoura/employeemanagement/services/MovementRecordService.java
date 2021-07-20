@@ -7,6 +7,7 @@ import br.com.igorcoura.employeemanagement.domain.models.movementRecord.Movement
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
 import br.com.igorcoura.employeemanagement.repository.MovementRecordRepository;
 import br.com.igorcoura.employeemanagement.services.exception.UpdateMovementRecordException;
+import br.com.igorcoura.employeemanagement.services.interfaces.IMovementRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +16,13 @@ import java.util.List;
 
 
 @Service
-public class MovementRecordService {
+public class MovementRecordService implements IMovementRecordService {
 
     @Autowired
-    MovementRecordRepository movementRecordRepository;
+    private MovementRecordRepository movementRecordRepository;
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
 
     public MovementRecordModel insert(CreateMovementRecordModel movementRecordModel){
@@ -33,6 +34,8 @@ public class MovementRecordService {
 
     public MovementRecordModel update(MovementRecordModel movementRecordModel, boolean forceUpdate){
         var entity = MovementRecordMapper.toEntity(movementRecordModel);
+        var employee = employeeRepository.findById(movementRecordModel.getIdEmployee()).orElseThrow(() -> new EntityNotFoundException("Employee with id = "+movementRecordModel.getIdEmployee()+", Not Found"));
+        entity.setEmployee(employee);
         if(!forceUpdate){
             var movementRecord = movementRecordRepository.findById(entity.getId()).orElseThrow(
                     () -> new EntityNotFoundException("Movement Record with id = "+entity.getId()+", Not Found")

@@ -3,6 +3,7 @@ package br.com.igorcoura.employeemanagement.services;
 import br.com.igorcoura.employeemanagement.Mapper.EmployeeMapper;
 import br.com.igorcoura.employeemanagement.domain.entities.Employee;
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
+import br.com.igorcoura.employeemanagement.services.interfaces.IEmployeeService;
 import br.com.igorcoura.employeemanagement.utils.EmployeeUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

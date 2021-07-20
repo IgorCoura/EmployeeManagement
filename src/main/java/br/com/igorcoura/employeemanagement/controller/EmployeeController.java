@@ -5,6 +5,7 @@ import br.com.igorcoura.employeemanagement.domain.models.employee.CreateEmployee
 import br.com.igorcoura.employeemanagement.domain.models.employee.EmployeeModel;
 import br.com.igorcoura.employeemanagement.domain.models.employee.ReturnEmployeeModel;
 import br.com.igorcoura.employeemanagement.services.EmployeeService;
+import br.com.igorcoura.employeemanagement.services.interfaces.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired
-    EmployeeService employeeService;
+    private IEmployeeService employeeService;
 
     @PostMapping
     public ResponseEntity<EmployeeModel> register(@RequestBody @Valid CreateEmployeeModel createEmployeeModel){

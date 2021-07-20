@@ -3,6 +3,7 @@ package br.com.igorcoura.employeemanagement.controller;
 import br.com.igorcoura.employeemanagement.domain.models.employee.CreateEmployeeModel;
 import br.com.igorcoura.employeemanagement.domain.models.employee.EmployeeModel;
 import br.com.igorcoura.employeemanagement.services.EmployeeService;
+import br.com.igorcoura.employeemanagement.services.interfaces.IEmployeeService;
 import br.com.igorcoura.employeemanagement.utils.EmployeeUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

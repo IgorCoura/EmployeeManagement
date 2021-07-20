@@ -16,7 +16,7 @@ public class MovementRecordModel {
     @NotNull(message = "Id cannot be null")
     private long id;
     @NotNull(message = "Employee cannot be null")
-    private Employee employee;
+    private long idEmployee;
     @NotNull(message = "Start time work cannot be null")
     private LocalDateTime startTimeWork = null;
     @NotNull(message = "Start lunch time cannot be null")
@@ -31,11 +31,11 @@ public class MovementRecordModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MovementRecordModel that = (MovementRecordModel) o;
-        return id == that.id && Objects.equals(employee, that.employee) && Objects.equals(startTimeWork, that.startTimeWork) && Objects.equals(startLunchTime, that.startLunchTime) && Objects.equals(endLunchTime, that.endLunchTime) && Objects.equals(endTimeWork, that.endTimeWork);
+        return id == that.id && idEmployee == that.idEmployee && Objects.equals(startTimeWork, that.startTimeWork) && Objects.equals(startLunchTime, that.startLunchTime) && Objects.equals(endLunchTime, that.endLunchTime) && Objects.equals(endTimeWork, that.endTimeWork);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, employee, startTimeWork, startLunchTime, endLunchTime, endTimeWork);
+        return Objects.hash(id, idEmployee, startTimeWork, startLunchTime, endLunchTime, endTimeWork);
     }
 }

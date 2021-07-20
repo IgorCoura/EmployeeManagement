@@ -5,6 +5,7 @@ import br.com.igorcoura.employeemanagement.domain.models.employee.CreateEmployee
 import br.com.igorcoura.employeemanagement.domain.models.employee.EmployeeModel;
 import br.com.igorcoura.employeemanagement.domain.models.employee.ReturnEmployeeModel;
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
+import br.com.igorcoura.employeemanagement.services.interfaces.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +14,10 @@ import java.util.List;
 
 
 @Service
-public class EmployeeService {
-
-    final private EmployeeRepository employeeRepository;
+public class EmployeeService implements IEmployeeService {
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
-
+    private EmployeeRepository employeeRepository;
 
     public EmployeeModel insert(CreateEmployeeModel employeeModel){
         var entity = employeeRepository.save(EmployeeMapper.toEntity(employeeModel));

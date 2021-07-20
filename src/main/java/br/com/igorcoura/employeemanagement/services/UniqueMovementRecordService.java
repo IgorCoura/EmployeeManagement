@@ -6,6 +6,7 @@ import br.com.igorcoura.employeemanagement.domain.models.movementRecord.Movement
 import br.com.igorcoura.employeemanagement.domain.models.movementRecord.NewUniqueMovementRecordModel;
 import br.com.igorcoura.employeemanagement.repository.EmployeeRepository;
 import br.com.igorcoura.employeemanagement.repository.MovementRecordRepository;
+import br.com.igorcoura.employeemanagement.services.interfaces.IUniqueMovementRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UniqueMovementRecordService {
+public class UniqueMovementRecordService implements IUniqueMovementRecordService {
 
     @Autowired
-    MovementRecordRepository movementRecordRepository;
+    private MovementRecordRepository movementRecordRepository;
     @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
 
     public MovementRecordModel insert(NewUniqueMovementRecordModel newUniqueMovementRecordModel){

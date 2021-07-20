@@ -54,7 +54,7 @@ public class UniqueMovementRecordServiceTests {
     void insertValidWhenHaveDataInMovementRecordRepository(){
         var newMovementRecord = MovementRecordUtils.getNewMovementRecordValidTimeToEndLunch();
         var employee = MovementRecordUtils.getEmployee();
-        var listMovementRecord = MovementRecordUtils.createListMovementRecord();
+        var listMovementRecord = MovementRecordUtils.getListMovementRecord();
 
         MovementRecord entity = new MovementRecord().builder()
                 .id(listMovementRecord.get(5).getId())

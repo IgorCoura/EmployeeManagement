@@ -140,7 +140,7 @@ public class MovementRecordUtils {
     @Getter
     private static MovementRecordModel movementRecordModelValidAllParameters = MovementRecordModel.builder()
             .id(14)
-            .employee(employee)
+            .idEmployee(employee.getId())
             .startTimeWork(startTimeWork)
             .startLunchTime(startLunchTime)
             .endLunchTime(endLunchTime)
@@ -154,7 +154,7 @@ public class MovementRecordUtils {
             .isOpen(false)
             .build();
 
-    public static List<MovementRecord> createListMovementRecord(){
+    public static List<MovementRecord> getListMovementRecord(){
         List<MovementRecord> list = new ArrayList<MovementRecord>();
         list.add(movementRecordOpenWithoutEmployee);
         list.add(movementRecordOpenOnlyEndLunchTime); // it will be closed
@@ -172,6 +172,19 @@ public class MovementRecordUtils {
         return list;
     }
 
+    public static List<MovementRecord> getListMovementRecordValid(){
+        List<MovementRecord> list = new ArrayList<MovementRecord>();
+        list.add(movementRecordOpenWithStartTimeWorkAndStartLunchTime);
+        list.add(movementRecordCloseValidAllParameters);
+        return list;
+    }
+
+
+    public static  List<MovementRecordModel> getListMovementRecordModel(){
+        List<MovementRecordModel> list = new ArrayList<>();
+        list.add(movementRecordModelValidAllParameters);
+        return list;
+    }
 
 
 

@@ -53,7 +53,9 @@ public class MovementRecordServiceTests {
         var expectedResponse = MovementRecordUtils.getMovementRecordModelValidAllParameters();
         Optional<MovementRecord> findReturn = Optional.of(MovementRecordUtils.getMovementRecordOnlyEmployee());
         var returnSave = MovementRecordMapper.toEntity(expectedResponse);
+        returnSave.setEmployee(MovementRecordUtils.getEmployee());
 
+        when(employeeRepository.findById(any(long.class))).thenReturn(Optional.of(returnSave.getEmployee()));
         when(movementRecordRepository.findById(any(Long.class))).thenReturn(findReturn);
         when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(returnSave);
 
@@ -66,7 +68,9 @@ public class MovementRecordServiceTests {
     void updateValidForceOpenMovementRecord() {
         var expectedResponse = MovementRecordUtils.getMovementRecordModelValidAllParameters();
         var returnSave = MovementRecordMapper.toEntity(expectedResponse);
+        returnSave.setEmployee(MovementRecordUtils.getEmployee());
 
+        when(employeeRepository.findById(any(long.class))).thenReturn(Optional.of(returnSave.getEmployee()));
         when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(returnSave);
 
         var response = movementRecordService.update(expectedResponse, true);
@@ -89,6 +93,7 @@ public class MovementRecordServiceTests {
         var request = MovementRecordUtils.getMovementRecordModelValidAllParameters();
         Optional<MovementRecord> findReturn = Optional.of(MovementRecordUtils.getMovementRecordOnlyEmployee().builder().isOpen(true).build());
 
+        when(employeeRepository.findById(any(long.class))).thenReturn(Optional.of(MovementRecordUtils.getEmployee()));
         when(movementRecordRepository.findById(any(Long.class))).thenReturn(findReturn);
 
         assertThrows(UpdateMovementRecordException.class, () -> {
@@ -98,7 +103,7 @@ public class MovementRecordServiceTests {
 
     @Test
     void recoverAllValid() {
-        var listReturn = MovementRecordUtils.createListMovementRecord();
+        var listReturn = MovementRecordUtils.getListMovementRecordValid();
         var expectedResponse = MovementRecordMapper.toListModel(listReturn);
 
         when(movementRecordRepository.findAll()).thenReturn(listReturn);
