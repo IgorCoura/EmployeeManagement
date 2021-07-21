@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>br.com.igorcoura</groupId>
 	<artifactId>employee-movement-record-manager</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>employee-management</name>
-	<description>Demo project for Spring Boot</description>
+	<version>1.0.0</version>
+	<name>employee-movement-record-manager</name>
+	<description>employee-movement-record-manager</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
