@@ -23,7 +23,7 @@ public class Employee {
     private String cpf;
     @Column(nullable = false)
     private String cnpj;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "employee")
     private List<MovementRecord> movementRecord;
     @Column(nullable = false)
     private LocalTime startWork;

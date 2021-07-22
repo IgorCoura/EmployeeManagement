@@ -5,12 +5,14 @@ import br.com.igorcoura.employeemovementrecordmanager.domain.entities.MovementRe
 import br.com.igorcoura.employeemovementrecordmanager.domain.models.movementRecord.MovementRecordModel;
 import br.com.igorcoura.employeemovementrecordmanager.domain.models.movementRecord.CreateUniqueMovementRecordModel;
 import br.com.igorcoura.employeemovementrecordmanager.repository.EmployeeRepository;
+import br.com.igorcoura.employeemovementrecordmanager.repository.MovementRecordCustomRepository;
 import br.com.igorcoura.employeemovementrecordmanager.repository.MovementRecordRepository;
 import br.com.igorcoura.employeemovementrecordmanager.services.interfaces.IUniqueMovementRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +24,13 @@ public class UniqueMovementRecordService implements IUniqueMovementRecordService
     private MovementRecordRepository movementRecordRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private MovementRecordCustomRepository movementRecordCustomRepository;
 
 
     public MovementRecordModel insert(CreateUniqueMovementRecordModel createUniqueMovementRecordModel){
-        var employee = employeeRepository.getById(createUniqueMovementRecordModel.getIdEmployee());
-        var openList = movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).employee(employee).build()));
+        var employee = employeeRepository.findById(createUniqueMovementRecordModel.getIdEmployee()).orElseThrow(() -> new EntityNotFoundException("Employee with id = "+createUniqueMovementRecordModel.getIdEmployee()+", Not Found"));
+        var openList = movementRecordCustomRepository.findAll(null,employee,true);
         MovementRecord movement = null;
         if(openList.stream().count() > 0){
             movement = checkMovementValidity(openList, createUniqueMovementRecordModel);
@@ -117,7 +121,7 @@ public class UniqueMovementRecordService implements IUniqueMovementRecordService
     }
 
     private MovementRecord addMovementExistingRecord(MovementRecord movementRecord, CreateUniqueMovementRecordModel createUniqueMovementRecordModel){
-        if(movementRecord.getEndLunchTime() != null && movementRecord.getStartLunchTime() == null){
+        if(movementRecord.getEndLunchTime() == null && movementRecord.getStartLunchTime() == null){
             movementRecord.setStartLunchTime(createUniqueMovementRecordModel.getDate());
             return movementRecord;
         }

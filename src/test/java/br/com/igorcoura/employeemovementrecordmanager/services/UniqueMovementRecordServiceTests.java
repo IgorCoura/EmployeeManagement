@@ -1,9 +1,11 @@
 package br.com.igorcoura.employeemovementrecordmanager.services;
 
 import br.com.igorcoura.employeemovementrecordmanager.Mapper.MovementRecordMapper;
+import br.com.igorcoura.employeemovementrecordmanager.domain.entities.Employee;
 import br.com.igorcoura.employeemovementrecordmanager.domain.entities.MovementRecord;
 import br.com.igorcoura.employeemovementrecordmanager.domain.models.movementRecord.MovementRecordModel;
 import br.com.igorcoura.employeemovementrecordmanager.repository.EmployeeRepository;
+import br.com.igorcoura.employeemovementrecordmanager.repository.MovementRecordCustomRepository;
 import br.com.igorcoura.employeemovementrecordmanager.repository.MovementRecordRepository;
 import br.com.igorcoura.employeemovementrecordmanager.utils.MovementRecordUtils;
 import org.junit.jupiter.api.Test;
@@ -15,8 +17,10 @@ import org.springframework.data.domain.Example;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({MockitoExtension.class})
@@ -28,8 +32,13 @@ public class UniqueMovementRecordServiceTests {
     @Mock
     private EmployeeRepository employeeRepository;
 
+    @Mock
+    private MovementRecordCustomRepository movementRecordCustomRepository;
+
     @InjectMocks
     private UniqueMovementRecordService movementRecordService;
+
+
 
     @Test
     void insertValidWhenNotHaveAnythingInMovementRecordRepository() {
@@ -41,8 +50,8 @@ public class UniqueMovementRecordServiceTests {
                 .isOpen(true).build();
         MovementRecordModel expectedResponse = MovementRecordMapper.toModel(entity);
 
-        when(movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).employee(employee).build()))).thenReturn(new ArrayList<MovementRecord>());
-        when(employeeRepository.getById(any(long.class))).thenReturn(employee);
+        when(movementRecordCustomRepository.findAll(eq(null),any(Employee.class), any(Boolean.class))).thenReturn(new ArrayList<MovementRecord>());
+        when(employeeRepository.findById(any(long.class))).thenReturn(Optional.of(employee));
         when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(entity);
 
         var response = movementRecordService.insert(newMovementRecord);
@@ -67,8 +76,8 @@ public class UniqueMovementRecordServiceTests {
 
         MovementRecordModel expectedResponse = MovementRecordMapper.toModel(entity);
 
-        when(movementRecordRepository.findAll(Example.of(MovementRecord.builder().isOpen(true).employee(employee).build()))).thenReturn(listMovementRecord);
-        when(employeeRepository.getById(any(long.class))).thenReturn(employee);
+        when(movementRecordCustomRepository.findAll(eq(null),any(Employee.class), any(Boolean.class))).thenReturn(listMovementRecord);
+        when(employeeRepository.findById(any(long.class))).thenReturn(Optional.of(employee));
         when(movementRecordRepository.save(any(MovementRecord.class))).thenReturn(entity);
 
         var response = movementRecordService.insert(newMovementRecord);
