@@ -5,7 +5,7 @@
 
   Employee Movement Record Manager is a simple Rest API created during a bootcamp, made just for learning purposes.
   
-  This application was created in order to receive and store the entries and exits of employees to later be used in the composition of the payroll.
+  This project was created in order to receive and store the entries and exits of employees to later be used in the composition of the payroll.
   
   https://employee-movement-record.herokuapp.com/swagger-ui.html#/
   
