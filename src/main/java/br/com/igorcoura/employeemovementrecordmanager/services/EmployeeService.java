@@ -31,6 +31,7 @@ public class EmployeeService implements IEmployeeService {
 
     public List<ReturnEmployeeModel> recoverAll(){
         var entity = employeeRepository.findAll();
+
         return EmployeeMapper.toReturnModel(entity);
     }
 
