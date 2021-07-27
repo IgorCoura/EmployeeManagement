@@ -39,7 +39,6 @@ public class EmployeeServiceTests {
         var response = employeeService.insert(model);
 
        assertEquals(expectedSavedEmployee, response);
-       assertTrue(false);
     }
 
     @Test
