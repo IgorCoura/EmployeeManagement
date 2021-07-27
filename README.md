@@ -3,7 +3,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/IgorCoura/EmployeeMovementRecordManager)
 ## About the project
 
-  Employee Movement Record Manager is a simple Rest API created during a bootcamp, made just for learning purposes.
+  Employee Movement Record Manager is a simple Rest API created during a bootcamp, made just for learning purposes;
   
   This project was created in order to receive and store the entries and exits of employees to later be used in the composition of the payroll.
   
